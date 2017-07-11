@@ -28,8 +28,8 @@ else
 	$connection = new TwitterOAuth(CONSUMER_KEY,CONSUMER_SECRET,$access_token['oauth_token'],$access_token['oauth_token_secret']);
 	$user = $connection->get("account/verify_credentials");
 	//echo $user->status->text;
-	// echo "<pre>";
-	// print_r($user);
+	echo "<pre>";
+	print_r($user);
 	echo "<pre>";
 }
 
