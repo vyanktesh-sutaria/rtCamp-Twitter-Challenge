@@ -50,9 +50,35 @@ else
 	}
 	else
 	{
+		echo "<h1>Tweets List</h1>";
+
 		$tweets_result=$connection->get("statuses/user_timeline",['count'=>1]);
-		//$data=json_decode($tweets_result);
 		print_r($tweets_result);
+
+		echo "<h1>Followers List</h1>";
+		$follower=$connection->get('followers/list');
+		print_r($follower->users);
+
+		$follower_name = array();
+		foreach ($follower->users as $f) {
+			array_push($follower_name, $f->name);
+		}
+
+		print_r($follower_name);
+
+		echo "<h1>Followers List (JSON)</h1>";
+		echo json_encode($follower_name);
+
+		echo "<h1>Followers Tweets</h1>";
+
+		$cnt=1;
+		$tweets[]=$connection->get("statuses/user_timeline",['count'=>100,'screen_name'=>'Zahurafzal']);
+		foreach ($tweets as $p) {
+			foreach ($p as $k) {
+				echo $cnt .":- ".$k->text."<br>";
+				$cnt++;
+			}
+		}
 	}
 	?>
 </body>
