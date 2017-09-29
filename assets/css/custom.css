@@ -1,9 +1,8 @@
     .bx-wrapper .bx-viewport { 
-		background-image: url('images/bkgrd.jpg');
+		background-image: url('../images/bkgrd.jpg');
 		background-size: cover;
 		background-repeat: no-repeat;
-		height: 0px !important;
-		max-height: 600px !important;
+		height: 550px !important;
 	}
 
 	.bxslider{

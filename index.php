@@ -8,21 +8,21 @@ require 'controller.php';
 	<title>RtCamp twitter Project</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
 	<!-- bxSlider CSS file -->
-	<link href="plugin/css/jquery.bxslider.css" rel="stylesheet" />
-	<link rel="stylesheet" href="plugin/css/tweet.24e0cef9279c9cccaf5e72165aa3517a.light.ltr.css">
+	<link href="assets/css/jquery.bxslider.css" rel="stylesheet" />
+	<link rel="stylesheet" href="assets/css/tweet.24e0cef9279c9cccaf5e72165aa3517a.light.ltr.css">
 	<!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">    
     <!--Import jQuery-ui CSS-->
-    <link rel="stylesheet" href="plugin/css/jquery-ui.css">
+    <link rel="stylesheet" href="assets/css/jquery-ui.css">
     <!--Import Custom CSS-->
-    <link rel="stylesheet" href="plugin/css/custom.css">
+    <link rel="stylesheet" href="assets/css/custom.css">
 
-    <script src="./plugin/js/jquery-1.9.1.js"></script>
-	<script src="plugin/js/bootstrap.min.js"></script>
+    <script src="assets/js/jquery-1.9.1.js"></script>
+	<script src="assets/js/bootstrap.min.js"></script>
 	<!--Import jQuery-ui js -->
-	<script src="plugin/js/jquery-ui.js"></script>
+	<script src="assets/js/jquery-ui.js"></script>
 	<!-- bxSlider Javascript file -->
-	<script src="plugin/js/jquery.bxslider.js"></script>
+	<script src="assets/js/jquery.bxslider.js"></script>
 
 	<script type="text/javascript">
 		$(document).ready(function(){
@@ -42,7 +42,7 @@ require 'controller.php';
 						type:"post",
 						success:function(response){
 							slider.destroySlider();
-							$(".bxslider").html(response).bxSlider();
+							slider.html(response).bxSlider();
 						},
 						failure:function(response){
 							console.log(response);
@@ -63,7 +63,7 @@ require 'controller.php';
 		<div class="container" style="background-color: #00aced; margin: 0;width: 100%;height: 47.25em;">
 			<div class="row" style="margin: 2em;">
 				<center>
-					<img src="images/logo.png"/><br>
+					<img src="assets/images/logo.png"/><br>
 					<a href="<?php echo $url?>" class="btn pulse" style="color: white; font-size: 36px;width: 20%;background-color: #1dcaff">Login</a>
 				</center>
 			</div>
@@ -76,7 +76,7 @@ require 'controller.php';
 		<div class="row" style="background-color: #03a9f4">
 			<div class="col-xs-12">
 				<div class="col-xs-2">
-					<img src="images/twitterlogo.png" height="60px" width="60px" />
+					<img src="assets/images/twitterlogo.png" height="60px" width="60px" />
 				</div>
 				<div class="col-xs-8" style="margin-top: 1em;">
 					<input type="text" class="form-control" id="followersrch" autocomplete="off" placeholder="Search follower" />
@@ -143,7 +143,7 @@ require 'controller.php';
 	      <div class="MediaCard-mediaContainer js-cspForcedStyle" style="padding-bottom: 56.3333%" data-style="padding-bottom: 56.3333%" data-csp-fix="true">
 	          <a class="MediaCard-mediaAsset
 	                    NaturalImage
-	" href="<?php if(isset($t->entities->media)) {echo $t->entities->media[0]->url;} else {echo "";}?>" data-scribe="element:photo"><img class="NaturalImage-image" data-srcset="https%3A%2F%2Fpbs.twimg.com%2Fmedia%2FBm54nBCCYAACwBi.jpg%3Alarge 960w,https%3A%2F%2Fpbs.twimg.com%2Fmedia%2FBm54nBCCYAACwBi.jpg 600w,https%3A%2F%2Fpbs.twimg.com%2Fmedia%2FBm54nBCCYAACwBi.jpg%3Asmall 340w" width="600" height="338" title="View image on Twitter" alt="View image on Twitter" src="<?php if(isset($t->entities->media)) {echo $t->entities->media[0]->media_url;} else {echo "images/twitter.jpg";}?>"></a>
+	" href="<?php if(isset($t->entities->media)) {echo $t->entities->media[0]->url;} else {echo "";}?>" data-scribe="element:photo"><img class="NaturalImage-image" data-srcset="https%3A%2F%2Fpbs.twimg.com%2Fmedia%2FBm54nBCCYAACwBi.jpg%3Alarge 960w,https%3A%2F%2Fpbs.twimg.com%2Fmedia%2FBm54nBCCYAACwBi.jpg 600w,https%3A%2F%2Fpbs.twimg.com%2Fmedia%2FBm54nBCCYAACwBi.jpg%3Asmall 340w" width="600" height="338" title="View image on Twitter" alt="View image on Twitter" src="<?php if(isset($t->entities->media)) {echo $t->entities->media[0]->media_url;} else {echo "assets/images/twitter.jpg";}?>"></a>
 	      </div>
 	    </div>
 	  </div>
