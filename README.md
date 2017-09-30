@@ -30,4 +30,6 @@ NOTE : For downloading the tweet in Google Spreadsheet format the user has to co
 
 5. [Google Sheet API](https://developers.google.com/sheets/api/quickstart/php)
 
+6. [bxSlider](http://bxslider.com/)
+
 
