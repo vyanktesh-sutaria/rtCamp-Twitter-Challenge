@@ -1,6 +1,6 @@
 # RtCamp Twitter Application
 
-Demo Link : [Application Demo Link](https://rtcampdemp.000webhostapp.com)
+Demo Link : [Application Demo Link](https://rtcampdemo.000webhostapp.com)
 
 ### Part 1 :
 
