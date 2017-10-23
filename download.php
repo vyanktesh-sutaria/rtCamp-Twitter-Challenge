@@ -2,13 +2,41 @@
 
 	require_once "controller.php";
 
+
 if(isset($_REQUEST['format']))
 {
-
-	$td_t=array();
-	if(count($td_t)==0)
+	if($_REQUEST['data']=="flw")
 	{
-		for ($i=1; $i <= 16; $i++)
+		define("ID", "FollowerName");
+		define("VALUE", "FollowerScreenName");
+		define("FILE_NAME", $_SESSION['flwdwn']);
+		define("ROOT", "Follower");
+		$cursor=-1;
+		// $flwdwn=$connection->get('followers/list',["screen_name"=>$_SESSION['flwdwn'],"count"=>200,"cursor"=>$cursor]);
+		$td_t = array();
+		for ($i=1; $i<=15,$cursor!=0; $i++) { 
+			$flwdwn=$connection->get('followers/list',["screen_name"=>$_SESSION['flwdwn'],"count"=>200,"cursor"=>$cursor]);
+			if(!isset($flwdwn->users))
+			{
+				break;
+			}
+			foreach ($flwdwn->users as $f) {
+				$tmp=new stdClass;
+				$tmp->id_str=$f->name;
+				$tmp->text=$f->screen_name;
+				array_push($td_t, [$tmp]);
+			}
+			$cursor = $flwdwn->next_cursor;
+		}
+	}
+	else
+	{
+		define("ID", "TweetID");
+		define("VALUE", "Tweet");
+		define("FILE_NAME", $user->name);
+		define("ROOT", "Tweet");
+		$td_t=array();
+		for ($i=1; $i <= 15; $i++)
 		{
 			$td = $connection->get("statuses/user_timeline",['count'=>200,'exclude_replies'=>'true','include_rts'=>'true','contributor_details'=>'false','page'=>$i]);
 			array_push($td_t, $td);
@@ -18,11 +46,11 @@ if(isset($_REQUEST['format']))
 	if($_REQUEST['format']=="csv")
 	{
 		header("Content-type: text/csv; charset=utf-8");
-		header("Content-Disposition: attachment; filename=".$user->name." Tweets.csv");
+		header("Content-Disposition: attachment; filename=".FILE_NAME.".csv");
 
-		$file = fopen($user->name.' Tweets.csv', 'w');
+		$file = fopen(FILE_NAME.'.csv', 'w');
  		
- 		fputcsv($file, array('Tweet ID', 'Tweet'));
+ 		fputcsv($file, array(ID, VALUE));
 		 
 		foreach ($td_t as $rows)
 		{
@@ -33,15 +61,15 @@ if(isset($_REQUEST['format']))
 		
 		fclose($file);
 
-		readfile("./".$user->name." Tweets.csv");
-		unlink("./".$user->name." Tweets.csv");	
+		readfile("./".FILE_NAME.".csv");
+		unlink("./".FILE_NAME.".csv");	
 
 	}
 	elseif($_REQUEST['format']=="xls")
 	{
-		$file = fopen($user->name.' Tweets.xls', 'w');
+		$file = fopen(FILE_NAME.'.xls', 'w');
 
-		fputcsv($file, array('Tweet ID', 'Tweet'));
+		fputcsv($file, array(ID, VALUE));
 
 		foreach ($td_t as $rows) {
 			foreach ($rows as $row) {
@@ -52,47 +80,55 @@ if(isset($_REQUEST['format']))
 		fclose($file);
 
 		header("Content-type: application/octet-stream");
-		header("Content-Disposition: attachment; filename=".$user->name." Tweets.xls");
-		readfile("./".$user->name." Tweets.xls");
-		unlink("./".$user->name." Tweets.xls");
+		header("Content-Disposition: attachment; filename=".FILE_NAME.".xls");
+		readfile("./".FILE_NAME.".xls");
+		unlink("./".FILE_NAME.".xls");
 	}
 	elseif($_REQUEST['format']=="xml")
 	{
 		header('Content-type: text/xml');
-		header("Content-Disposition: attachment; filename=".$user->name." Tweets.xml");
+		header("Content-Disposition: attachment; filename=".FILE_NAME.".xml");
 		$file=new SimpleXMLElement('<xml/>');
 
 		foreach ($td_t as $rows) {
 			foreach ($rows as $row) {
-				$tid=$file->addChild('Tweet');
-				$tid->addChild("TweetID",$row->id_str);
-				$tid->addChild("Tweetcontent",$row->text);
+				$tid=$file->addChild(ROOT);
+				$tid->addChild(ID,$row->id_str);
+				$tid->addChild(VALUE,$row->text);
 			}
 		}
 
-		$file->saveXML($user->name." Tweets.xml");
-		readfile("./".$user->name." Tweets.xml");
-		unlink("./".$user->name." Tweets.xml");
+		$file->saveXML(FILE_NAME.".xml");
+		readfile("./".FILE_NAME.".xml");
+		unlink("./".FILE_NAME.".xml");
 	}
 	elseif($_REQUEST['format']=="json")
 	{
 		header("Content-type: application/json");
-		header("Content-Disposition: attachment; filename=".$user->name." Tweets.json");
+		header("Content-Disposition: attachment; filename=".FILE_NAME.".json");
 		
-		$file=fopen($user->name." Tweets.json","w");
+		$file=fopen(FILE_NAME.".json","w");
 
 		$result = array();
 		foreach ($td_t as $rows) {
 			foreach ($rows as $row) {
-				array_push($result, ["TweetID"=>$row->id_str,"Tweet"=>$row->text]);
+				array_push($result, [ID=>$row->id_str,VALUE=>$row->text]);
 			}
 		}
 
 		fwrite($file, json_encode($result));
 		fclose($file);
 
-		readfile("./".$user->name." Tweets.json");
-		unlink("./".$user->name." Tweets.json");
+		readfile("./".FILE_NAME.".json");
+		unlink("./".FILE_NAME.".json");
+	}
+	else
+	{
+		?>
+			<script type="text/javascript">
+				alert("Something went wrong try after sometime");
+			</script>
+		<?php
 	}
 }
 ?>

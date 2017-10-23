@@ -51,6 +51,42 @@ require 'controller.php';
 					return false;
                }
         	});
+
+			$("#btnlogout").click(function () {
+				$.ajax({
+					url:"controller.php?btnlogout=true",
+					type:"post",
+					success:function(response){
+						location.reload();
+					},
+					failure:function(response){
+						console.log(response);
+					}
+				});
+			})
+        	$("#txtflwdwn").keyup(function (event) {
+        		var keycode = (event.keyCode ? event.keyCode : event.which);
+				if(keycode == '13'){
+					$.ajax({
+						url:"controller.php?flwdwn="+$(this).val(),
+						type:"post",
+						success:function(response){
+							if(response == "Success")
+							{
+								$("#flwdwnbtn").removeClass("disabled");
+							}
+							else
+							{
+								$("#flwdwnbtn").addClass("disabled");
+								alert("Not a valid screen name");
+							}
+						},
+						failure:function(response){
+							console.log(response);
+						}
+					});
+				}
+        	})
 		});
 	</script>
 </head>
@@ -82,12 +118,36 @@ require 'controller.php';
 					<input type="text" class="form-control" id="followersrch" autocomplete="off" placeholder="Search follower" />
 				</div>
 				<div class="col-xs-2">
-					<input type="submit" name="btnlogout" class="btn btn-danger" style="float: right;margin: 1em 0;" value="Logout" />
+					<input type="button" id="btnlogout" class="btn btn-danger" style="float: right;margin: 1em 0;" value="Logout" />
 				</div>
 				<div class="clearfix"></div>
 			</div>
 		</div>
 		<div class="row" style="margin-top: 1em;">
+			<div class="col-xs-12" style="margin-bottom: 1em">
+				<div class="col-xs-offset-2 col-xs-8 input-group" style="display: inline-table;">
+					<span class="input-group-addon">@</span>
+					<input class="form-control" id="txtflwdwn" placeholder="Enter screen name and Press ENTER for Download" autocomplete="off" />
+					<div class = "btn-group input-group-btn">
+						<button type = "button" id="flwdwnbtn" class = "btn btn-primary dropdown-toggle disabled" data-toggle = "dropdown">
+							Download Follower 
+							<span class = "caret"></span>
+						</button>
+						
+						<ul class = "dropdown-menu">
+							<li><a href = "download.php?data=flw&format=csv">csv format</a></li>
+							<li><a href = "download.php?data=flw&format=xls">excel format</a></li>
+							<li><a href = "download.php?data=flw&format=xml">XML format</a></li>
+							<li><a href = "download.php?data=flw&format=json">json format</a></li>
+							<li>
+							<a href="<?php $client->setState(json_encode(array('data'=>'flw'))); echo $client->createAuthUrl(); ?>">Google SpreadSheet(Login Required)</a>
+							</li>
+						</ul>
+
+					</div>
+				</div>
+				<div class="clearfix" ></div>
+			</div>
 			<div class="col-xs-12">
 				<div class="col-xs-3" style="float: right; margin: 0 5.5em 1.5em 0;">
 					<div class = "btn-group">
@@ -97,12 +157,12 @@ require 'controller.php';
 						</button>
 						
 						<ul class = "dropdown-menu">
-							<li><a href = "download.php?format=csv">csv format</a></li>
-							<li><a href = "download.php?format=xls">excel format</a></li>
-							<li><a href = "download.php?format=xml">XML format</a></li>
-							<li><a href = "download.php?format=json">json format</a></li>
+							<li><a href = "download.php?data=tweet&format=csv">csv format</a></li>
+							<li><a href = "download.php?data=tweet&format=xls">excel format</a></li>
+							<li><a href = "download.php?data=tweet&format=xml">XML format</a></li>
+							<li><a href = "download.php?data=tweet&format=json">json format</a></li>
 							<li>
-							<a href="<?php echo $client->createAuthUrl(); ?>">Google SpreadSheet(Login Required)</a>
+							<a href="<?php $client->setState(json_encode(array('data'=>'tweet'))); echo $client->createAuthUrl(); ?>">Google SpreadSheet(Login Required)</a>
 							</li>
 						</ul>
 

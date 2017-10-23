@@ -9,9 +9,9 @@ define('CONSUMER_KEY', 'NvrtYx5XKgHiGKROJBpA8i921');
 define('CONSUMER_SECRET', 'PmtPCnSaZamJfqzBkz46O7pfGcEIetVxzJVtZ2VdZLDCZW3dDH');
 define('OAUTH_CALLBACK', 'http://local.rtdemo.com/callback.php');
 
-$user = null;
+$user = $flwdwn = null;
 
-if(isset($_POST['btnlogout']))
+if(isset($_REQUEST['btnlogout']))
 {
 	$user=null;
 	$tweets=null;
@@ -19,7 +19,6 @@ if(isset($_POST['btnlogout']))
 	$request_token=null;
 	session_destroy();
 	$url=null;
-	header("Location:./");
 }
 
 if(!isset($_SESSION['access_token']))
@@ -30,21 +29,40 @@ if(!isset($_SESSION['access_token']))
 	$_SESSION['oauth_token_secret'] = $request_token['oauth_token_secret'];
 	$url=$connection->url('oauth/authorize', array('oauth_token' => $request_token['oauth_token'] ));
 }
-if($user==null && isset($_SESSION['access_token']))
+if($user=="" && isset($_SESSION['access_token']))
 {
+
 	$access_token = $_SESSION['access_token'];
 	$connection = new TwitterOAuth(CONSUMER_KEY,CONSUMER_SECRET,$access_token['oauth_token'],$access_token['oauth_token_secret']);
 	$user = $connection->get("account/verify_credentials");
 
 	$tweets=$connection->get("statuses/user_timeline",['count'=>10]);
 
-	$follower=$connection->get('followers/list');
+	$follower=$connection->get('followers/list',["count"=>200]);
 	$follower_name = array();
-	foreach ($follower->users as $f) {
-		array_push($follower_name, ["label"=>$f->name,"value"=>$f->screen_name,"img"=>$f->profile_image_url_https]);
+	if(isset($follower->users))
+	{
+		foreach ($follower->users as $f) {
+			array_push($follower_name, ["label"=>$f->name,"value"=>$f->screen_name,"img"=>$f->profile_image_url_https]);
+		}
 	}
 
 	$follower_name = json_encode($follower_name);
+}
+
+if(isset($_REQUEST['flwdwn']))
+{
+	$flwdwn=$connection->get('users/lookup',["screen_name"=>$_REQUEST['flwdwn']]);
+
+	if(isset($flwdwn->errors))
+	{
+		echo "No User Found";
+	}
+	else
+	{
+		echo "Success";
+		$_SESSION['flwdwn']=$flwdwn[0]->screen_name;
+	}
 }
 
 if(isset($_REQUEST['flwsrch']))
