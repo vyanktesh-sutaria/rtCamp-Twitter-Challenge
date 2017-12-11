@@ -1,4 +1,4 @@
-<?php 
+<?php
 require 'controller.php';
 ?>
 
@@ -25,6 +25,23 @@ require 'controller.php';
 	<script src="assets/js/jquery.bxslider.js"></script>
 
 	<script type="text/javascript">
+
+			function tmp(format){
+				var person = prompt("All the Follower Data will be mailed on the given Email Address","Enter Email Address");
+				if (person != "") {
+					$.ajax({
+						url:"controller.php?format="+format+"&email="+person,
+						type:"post",
+						success:function(response){
+							console.log();
+						},
+						failure:function(response){
+							console.log(response);
+						}
+					});			
+				}
+			}
+
 		$(document).ready(function(){
 
 			var slider = $('.bxslider').bxSlider();
@@ -63,7 +80,8 @@ require 'controller.php';
 						console.log(response);
 					}
 				});
-			})
+			});
+
         	$("#txtflwdwn").keyup(function (event) {
         		var keycode = (event.keyCode ? event.keyCode : event.which);
 				if(keycode == '13'){
@@ -86,7 +104,7 @@ require 'controller.php';
 						}
 					});
 				}
-        	})
+        	});
 		});
 	</script>
 </head>
@@ -135,13 +153,10 @@ require 'controller.php';
 						</button>
 						
 						<ul class = "dropdown-menu">
-							<li><a href = "download.php?data=flw&format=csv">csv format</a></li>
-							<li><a href = "download.php?data=flw&format=xls">excel format</a></li>
-							<li><a href = "download.php?data=flw&format=xml">XML format</a></li>
-							<li><a href = "download.php?data=flw&format=json">json format</a></li>
-							<li>
-							<a href="<?php $client->setState(json_encode(array('data'=>'flw'))); echo $client->createAuthUrl(); ?>">Google SpreadSheet(Login Required)</a>
-							</li>
+							<li><a onclick = "tmp('csv')">csv format</a></li>
+							<li><a onclick = "tmp('xls')">excel format</a></li>
+							<li><a onclick = "tmp('xml')">XML format</a></li>
+							<li><a onclick = "tmp('json')">json format</a></li>
 						</ul>
 
 					</div>

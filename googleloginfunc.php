@@ -3,7 +3,7 @@ require_once 'vendor/autoload.php';
 require_once 'controller.php';
 
 
-define('CLIENT_SECRET_PATH', 'vendor/client_secret.json');
+define('CLIENT_SECRET_PATH', __DIR__.'/vendor/client_secret.json');
 $json = json_decode(file_get_contents(CLIENT_SECRET_PATH), true);
 define('REDIRECT_URI', $json['web']['redirect_uris'][1]);
 

@@ -1,0 +1,1 @@
+crontab `dirname $0`/cron.txt

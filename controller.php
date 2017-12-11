@@ -1,7 +1,8 @@
 <?php
+ini_set("display_errors",1);
 session_start();
 require "autoload.php";
-require_once "googleloginfunc.php";
+include_once "googleloginfunc.php";
 
 use Abraham\TwitterOAuth\TwitterOAuth;
 
@@ -62,6 +63,21 @@ if(isset($_REQUEST['flwdwn']))
 	{
 		echo "Success";
 		$_SESSION['flwdwn']=$flwdwn[0]->screen_name;
+	}
+}
+
+if(isset($_REQUEST['format']))
+{
+	$file = fopen("cron.txt","a");
+	$email = $_REQUEST['email'];
+	$format = $_REQUEST['format'];
+	$str = "*/15 * * * * php ".getcwd()."/flwdwn.php ".$format." -1 ".$_SESSION['flwdwn']." ".$email." \n";
+
+	$result = fwrite($file,$str);
+	if($result == true)
+	{
+		$cmd = "sudo bash ".getcwd()."/cron.sh";
+		shell_exec($cmd);
 	}
 }
 

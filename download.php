@@ -1,33 +1,34 @@
 <?php
 
 	require_once "controller.php";
-
+	ini_set('max_execution_time',0);
 
 if(isset($_REQUEST['format']))
 {
 	if($_REQUEST['data']=="flw")
 	{
-		define("ID", "FollowerName");
-		define("VALUE", "FollowerScreenName");
-		define("FILE_NAME", $_SESSION['flwdwn']);
-		define("ROOT", "Follower");
-		$cursor=-1;
-		// $flwdwn=$connection->get('followers/list',["screen_name"=>$_SESSION['flwdwn'],"count"=>200,"cursor"=>$cursor]);
-		$td_t = array();
-		for ($i=1; $i<=15,$cursor!=0; $i++) { 
-			$flwdwn=$connection->get('followers/list',["screen_name"=>$_SESSION['flwdwn'],"count"=>200,"cursor"=>$cursor]);
-			if(!isset($flwdwn->users))
-			{
-				break;
-			}
-			foreach ($flwdwn->users as $f) {
-				$tmp=new stdClass;
-				$tmp->id_str=$f->name;
-				$tmp->text=$f->screen_name;
-				array_push($td_t, [$tmp]);
-			}
-			$cursor = $flwdwn->next_cursor;
-		}
+		// define("ID", "FollowerName");
+		// define("VALUE", "FollowerScreenName");
+		// define("FILE_NAME", $_SESSION['flwdwn']);
+		// define("ROOT", "Follower");
+		// $cursor=-1;
+		// // $flwdwn=$connection->get('followers/list',["screen_name"=>$_SESSION['flwdwn'],"count"=>200,"cursor"=>$cursor]);
+		// $td_t = array();
+		// for ($i=1; $cursor!=0; $i++) { 
+		// 	$flwdwn=$connection->get('followers/list',["screen_name"=>$_SESSION['flwdwn'],"count"=>200,"cursor"=>$cursor]);
+		// 	if(!isset($flwdwn->users))
+		// 	{
+		// 		sleep(15*60);
+		// 		continue;
+		// 	}
+		// 	foreach ($flwdwn->users as $f) {
+		// 		$tmp=new stdClass;
+		// 		$tmp->id_str=$f->name;
+		// 		$tmp->text=$f->screen_name;
+		// 		array_push($td_t, [$tmp]);
+		// 	}
+		// 	$cursor = $flwdwn->next_cursor;
+		// }
 	}
 	else
 	{
