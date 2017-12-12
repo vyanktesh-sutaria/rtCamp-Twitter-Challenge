@@ -148,8 +148,8 @@ if($cursor == 0)
 	$mail->SMTPSecure = 'tls';
 	$mail->Host = 'smtp.gmail.com';
 	$mail->Port = 587; 
-	$mail->Username = "vsutaria72@gmail.com";  
-	$mail->Password = "1ofthewonder@indai./";
+	$mail->Username = "GMail Email ID";  
+	$mail->Password = "GMail Password";
 	
 	$mail->SetFrom('vsutaria72@gmail.com', 'RTCamp Twitter');
 	$mail->AddAddress($email);
